@@ -14,6 +14,8 @@ import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
 import { FormContact } from "./component/FormContact.jsx";
 import { FormEditContact } from "./component/FormEditContact.jsx";
+import { Characters } from "./component/Characters.jsx";
+import { CharacterDetail } from "./component/CharacterDetail.jsx";
 
 
 //Create your first component
@@ -28,13 +30,15 @@ const Layout = () => {
         <div className="d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-
+                <Navbar />
                     <Routes>
                         {/* <Route element={<Home />} path="/" /> */}
                         {/* <Route element={<Error404/>} path="*"/> */}
-                        <Route element={<ContactCards />} path="/" />
+                        <Route element={<ContactCards />} path="/ContactCards" />
                         <Route element={<FormContact />} path="/FormContact" />
                         <Route element={<FormEditContact />} path="/FormEditContact" />
+                        <Route element={<Characters />} path="/Characters" />
+                        <Route element={<CharacterDetail />} path="/CharacterDetail" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

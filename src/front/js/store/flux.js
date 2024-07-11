@@ -7,10 +7,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 			agenda: [],
 			contacts: [],
 			isAgenda: false,
-			currentContact: {}
+			currentContact: {},
+			characters: [],
+			character: [],
 
 		},
 		actions: {
+			// Function to bring characters
+			getCharacters: async () => {
+				const url = `${process.env.BACKEND_URL}/api/people`
+				const options = {
+					method: "GET"
+				};
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log('error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({ characters: data.results});
+			},
+			getCharacter: async () => {
+				const url = `${process.env.BACKEND_URL}/api/people/1`
+				const options = {
+					method: "GET"
+				};
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log('error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({ character: data.result.properties});
+			},
 			// Funcion to create agenda
 			createAgenda: async () => {
 				const url = `${getStore().host}agendas/${getStore().slug}`
@@ -105,8 +136,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			// Function to edit contact
 			editContact: (contact) => {
-			// Setear datos en currentContact
-			setStore({currentContact: contact})
+				// Setear datos en currentContact
+				setStore({ currentContact: contact })
 			},
 
 			saveEditContact: async (contact, id) => {
@@ -116,7 +147,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: 'PUT',
 					headers: {
 						'Content-Type': 'application/json'
-					  },
+					},
 					body: JSON.stringify(dataToSend)
 
 				}
@@ -129,7 +160,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				console.log(data);
 				getActions().getContact()
-				
+
 			},
 
 			getMessage: async () => {
