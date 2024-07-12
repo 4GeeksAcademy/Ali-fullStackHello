@@ -29,8 +29,13 @@ export const Navbar = () => {
 							</Link>
 						</li>
 						<li className="nav-item">
-							<Link to="/link" className="nav-link">
+							<Link to="/Planets" className="nav-link">
 								Planets
+							</Link>
+						</li>
+						<li className="nav-item">
+							<Link to="/Starships" className="nav-link">
+								Starships
 							</Link>
 						</li>
 						<li className="nav-item">

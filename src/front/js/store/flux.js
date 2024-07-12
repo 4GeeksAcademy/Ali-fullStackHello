@@ -10,6 +10,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentContact: {},
 			characters: [],
 			character: [],
+			starships: [],
+			starship: [],
+			planets: [],
+			planet: [],
+
 
 		},
 		actions: {
@@ -26,10 +31,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				console.log(data);
-				setStore({ characters: data.results});
+				setStore({ characters: data.results });
 			},
+			// Function to bring character details
 			getCharacter: async () => {
-				const url = `${process.env.BACKEND_URL}/api/people/1`
+				const url = `${process.env.BACKEND_URL}/api/people`
 				const options = {
 					method: "GET"
 				};
@@ -40,8 +46,72 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				console.log(data);
-				setStore({ character: data.result.properties});
+				setStore({ character: data.results });
 			},
+			// Function to set the character list empty
+			setCharacter: (person) => { setStore({character: person})},
+			// Function to bring planets
+			getPlanets: async () => {
+				const url = `${process.env.BACKEND_URL}/api/planets`
+				const options = {
+					method: "GET"
+				};
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log('error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({ planets: data.results });
+			},
+			// Function to bring planet details
+			getPlanet: async () => {
+				const url = `${process.env.BACKEND_URL}/api/planets`
+				const options = {
+					method: "GET"
+				};
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log('error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({ planet: data.results });
+			},
+			setPlanet: (star) => { setStore({planet: star})},
+			// Function to bring starships
+			getStarships: async () => {
+				const url = `${process.env.BACKEND_URL}/api/starships`
+				const options = {
+					method: "GET"
+				};
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log('error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({ starships: data.results });
+			},
+			// Function to bring starship details
+			getStarship: async () => {
+				const url = `${process.env.BACKEND_URL}/api/starships`
+				const options = {
+					method: "GET"
+				};
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log('error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({ starship: data.results });
+			},
+			setStarship: (vehicle) => { setStore({starship: vehicle})},
 			// Funcion to create agenda
 			createAgenda: async () => {
 				const url = `${getStore().host}agendas/${getStore().slug}`

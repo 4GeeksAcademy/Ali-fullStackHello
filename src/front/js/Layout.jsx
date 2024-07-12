@@ -15,7 +15,11 @@ import { Single } from "./pages/Single.jsx";
 import { FormContact } from "./component/FormContact.jsx";
 import { FormEditContact } from "./component/FormEditContact.jsx";
 import { Characters } from "./component/Characters.jsx";
-import { CharacterDetail } from "./component/CharacterDetail.jsx";
+import { CharacterDetails } from "./component/CharacterDetails.jsx";
+import { Planets } from "./component/Planets.jsx";
+import { PlanetDetails } from "./component/PlanetDetails.jsx";
+import { Starships } from "./component/Starships.jsx";
+import { StarshipDetails } from "./component/StarshipDetails.jsx";
 
 
 //Create your first component
@@ -38,7 +42,12 @@ const Layout = () => {
                         <Route element={<FormContact />} path="/FormContact" />
                         <Route element={<FormEditContact />} path="/FormEditContact" />
                         <Route element={<Characters />} path="/Characters" />
-                        <Route element={<CharacterDetail />} path="/CharacterDetail" />
+                        <Route element={<CharacterDetails />} path="/CharacterDetails" />
+                        <Route element={<Planets />} path="/Planets" />
+                        <Route element={<PlanetDetails />} path="/PlanetDetails" />
+                        <Route element={<Starships />} path="/Starships" />
+                        <Route element={<StarshipDetails />} path="/StarshipDetails" />
+                        
                     </Routes>
                     <Footer />
                 </ScrollToTop>
