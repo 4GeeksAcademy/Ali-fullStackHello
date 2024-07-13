@@ -14,7 +14,7 @@ export const ContactCards = () => {
     const handleDeleteContact = (contact) => {
         actions.deleteContact(contact)
     }
-
+    
     return (
         <div className="container">
             {/* Ternary if there is no agenda it will renderize a submit to create an agenda */}
@@ -40,13 +40,12 @@ export const ContactCards = () => {
                 <>
                     <ul className="list-group">
                         {store.contacts.map((contact, index) => (
-                            <li key={index} className="d-flex justify-content-between">
+                            <li key={index} className="d-flex">
                                 <div className="card contact-card my-2">
-                                    <div className="card-body d-flex">
+                                    <div className="card d-flex">
                                         <img
                                             className="me-4"
                                             src="https://static.wikia.nocookie.net/breakingbad/images/3/3a/Alfombra-breaking-bad-mod3-large2.jpg/revision/latest?cb=20190622081645&path-prefix=es"
-                                            alt=""
                                             style={{ width: '100px', height: '100px' }}
                                         />
                                         <div className="container">
@@ -61,7 +60,7 @@ export const ContactCards = () => {
                                         </div>
                                         <div className="d-flex">
                                             <div>
-                                                <Link to="/FormEditContact">
+                                                <Link to="/form-edit-contact">
                                                     <i className="fas fa-edit mx-3 text-dark btn btn-secondary" onClick={() => actions.editContact(contact)}></i>
                                                 </Link>
                                             </div>
@@ -75,7 +74,7 @@ export const ContactCards = () => {
                         ))}
                     </ul>
                     <div className="my-2">
-                        <Link to="/FormContact">
+                        <Link to="/form-contact">
                             <button className="btn btn-success justify-content-center">Add New Contact</button>
                         </Link>
                     </div>

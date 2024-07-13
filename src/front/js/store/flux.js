@@ -14,8 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			starship: [],
 			planets: [],
 			planet: [],
-
-
+			favorites: [],
 		},
 		actions: {
 			// Function to bring characters
@@ -34,8 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ characters: data.results });
 			},
 			// Function to bring character details
-			getCharacter: async () => {
-				const url = `${process.env.BACKEND_URL}/api/people`
+			getCharacter: async (url) => {
 				const options = {
 					method: "GET"
 				};
@@ -46,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				console.log(data);
-				setStore({ character: data.results });
+				setStore({ character: data.result });
 			},
 			// Function to set the character list empty
 			setCharacter: (person) => { setStore({character: person})},
@@ -66,8 +64,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ planets: data.results });
 			},
 			// Function to bring planet details
-			getPlanet: async () => {
-				const url = `${process.env.BACKEND_URL}/api/planets`
+			getPlanet: async (url) => {
 				const options = {
 					method: "GET"
 				};
@@ -78,7 +75,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				console.log(data);
-				setStore({ planet: data.results });
+				setStore({ planet: data.result });
 			},
 			setPlanet: (star) => { setStore({planet: star})},
 			// Function to bring starships
@@ -97,8 +94,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ starships: data.results });
 			},
 			// Function to bring starship details
-			getStarship: async () => {
-				const url = `${process.env.BACKEND_URL}/api/starships`
+			getStarship: async (url) => {
 				const options = {
 					method: "GET"
 				};
@@ -109,9 +105,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				console.log(data);
-				setStore({ starship: data.results });
+				setStore({ starship: data.result });
 			},
 			setStarship: (vehicle) => { setStore({starship: vehicle})},
+			// Function to add favorites
+			addFavorite: (name) => {
+				const store = getStore();
+				const myArray = store.favorites;
+				if (!myArray.includes(name)) {
+					setStore({ favorites: [...myArray, name] });
+				}
+			},
+			// Function to remove favorites
+			removeFavorite: (name) => {
+                const store = getStore();
+                const removeFavorites = store.favorites.filter((element) => element !== name);
+                setStore({ favorites: removeFavorites });
+            },
 			// Funcion to create agenda
 			createAgenda: async () => {
 				const url = `${getStore().host}agendas/${getStore().slug}`

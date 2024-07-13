@@ -45,7 +45,7 @@ export const FormContact = () => {
             </div>
             <div className="mt-3">
                 <button type="submit" className="btn btn-primary me-2">Save</button>
-                <Link to="/ContactCards">
+                <Link to="/contact-cards">
                     <button type="button" className="btn btn-primary">Contact list</button>
                 </Link>
             </div>

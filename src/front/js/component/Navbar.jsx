@@ -1,48 +1,42 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext.js";
 
 export const Navbar = () => {
-    return (
-		<div className="container-fluid">
-		<nav className="navbar navbar-expand-lg bg-light">
+	const { store, actions } = useContext(Context);
+	const handleRemoveFavorite = (element) => {
+		actions.removeFavorite(element);
+	};
+	return (
+		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div className="container-fluid">
-				<Link to="/demo" className="navbar-brand">
-					<img
-						className="d-inline-block align-text-top"
-						alt="Logo"
-						width="auto"
-						height="24"
-						src="https://logodownload.org/wp-content/uploads/2015/12/star-wars-logo-3-1.png"
-					/>
-				</Link>
-
-				<div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+				<img
+					className="logo"
+					alt="Logo"
+					width="auto"
+					height="24"
+					src="https://logodownload.org/wp-content/uploads/2015/12/star-wars-logo-3-1.png"
+				/>
+				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span className="navbar-toggler-icon"></span>
+				</button>
+				<div className="collapse navbar-collapse" id="navbarNav">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 						<li className="nav-item">
-							<Link to="/" className="nav-link" aria-current="page">
-								Home
-							</Link>
+							<Link className="nav-link" to="/home">Home</Link>
 						</li>
 						<li className="nav-item">
-							<Link to="/Characters" className="nav-link">
-								Characters
-							</Link>
+							<Link className="nav-link" to="/characters">Characters</Link>
 						</li>
 						<li className="nav-item">
-							<Link to="/Planets" className="nav-link">
-								Planets
-							</Link>
+							<Link className="nav-link" to="/planets">Planets</Link>
 						</li>
 						<li className="nav-item">
-							<Link to="/Starships" className="nav-link">
-								Starships
-							</Link>
+							<Link className="nav-link" to="/starships">Starships</Link>
 						</li>
-						<li className="nav-item">
-							<Link to="/ContactCards" className="nav-link">
-								Contacts Agenda
-							</Link>
-						</li>
+						<Link to="/agenda-contact">
+							<button className="btn btn-warning me-2">Agenda Contact</button>
+						</Link>
 					</ul>
 					<ul className="navbar-nav mb-2 mb-lg-0">
 						<li className="nav-item dropdown">
@@ -53,33 +47,25 @@ export const Navbar = () => {
 								data-bs-toggle="dropdown"
 								aria-expanded="false"
 							>
-								Dropdown
+								Favorites
 							</a>
-							<ul className="dropdown-menu dropdown-menu-end">
-								<li>
-									<a className="dropdown-item" href="#">
-										Action
-									</a>
-								</li>
-								<li>
-									<a className="dropdown-item" href="#">
-										Another action
-									</a>
-								</li>
-								<li>
-									<hr className="dropdown-divider" />
-								</li>
-								<li>
-									<a className="dropdown-item" href="#">
-										Something else here
-									</a>
-								</li>
+							<ul className="dropdown-menu dropdown-menu-end bg-warning">
+								{store.favorites.length === 0 ? (
+									<li className="dropdown-item">No Favorites</li>
+								) : (
+									store.favorites.map(element => (
+										<li key={element.uid} className="dropdown-item d-flex justify-content-between align-items-center">
+											{element.name}
+											<i className="fas fa-trash-alt"
+												onClick={() => handleRemoveFavorite(element)}></i>
+										</li>
+									))
+								)}
 							</ul>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</nav>
-	</div>
-);
+	);
 };

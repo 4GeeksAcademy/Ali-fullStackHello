@@ -7,19 +7,19 @@ import { BackendURL } from "./component/BackendURL.jsx";
 import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
 import { Error404 } from "./component/Error404.jsx";
-import { ContactCards } from "./component/ContactCards.jsx";
+import { ContactCards } from "./pages/ContactCards.jsx";
 /* import custom pages */
 import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
-import { FormContact } from "./component/FormContact.jsx";
-import { FormEditContact } from "./component/FormEditContact.jsx";
-import { Characters } from "./component/Characters.jsx";
-import { CharacterDetails } from "./component/CharacterDetails.jsx";
-import { Planets } from "./component/Planets.jsx";
-import { PlanetDetails } from "./component/PlanetDetails.jsx";
-import { Starships } from "./component/Starships.jsx";
-import { StarshipDetails } from "./component/StarshipDetails.jsx";
+import { FormContact } from "./pages/FormContact.jsx";
+import { FormEditContact } from "./pages/FormEditContact.jsx";
+import { Characters } from "./pages/Characters.jsx";
+import { CharacterDetails } from "./pages/CharacterDetails.jsx";
+import { Planets } from "./pages/Planets.jsx";
+import { PlanetDetails } from "./pages/PlanetDetails.jsx";
+import { Starships } from "./pages/Starships.jsx";
+import { StarshipDetails } from "./pages/StarshipDetails.jsx";
 
 
 //Create your first component
@@ -36,17 +36,17 @@ const Layout = () => {
                 <ScrollToTop>
                 <Navbar />
                     <Routes>
-                        {/* <Route element={<Home />} path="/" /> */}
+                        <Route element={<Home />} path="/home" />
                         {/* <Route element={<Error404/>} path="*"/> */}
-                        <Route element={<ContactCards />} path="/ContactCards" />
-                        <Route element={<FormContact />} path="/FormContact" />
-                        <Route element={<FormEditContact />} path="/FormEditContact" />
-                        <Route element={<Characters />} path="/Characters" />
-                        <Route element={<CharacterDetails />} path="/CharacterDetails" />
-                        <Route element={<Planets />} path="/Planets" />
-                        <Route element={<PlanetDetails />} path="/PlanetDetails" />
-                        <Route element={<Starships />} path="/Starships" />
-                        <Route element={<StarshipDetails />} path="/StarshipDetails" />
+                        <Route element={<ContactCards />} path="/contact-cards" />
+                        <Route element={<FormContact />} path="/form-contact" />
+                        <Route element={<FormEditContact />} path="/form-edit-contact" />
+                        <Route element={<Characters />} path="/characters" />
+                        <Route element={<CharacterDetails />} path="/character-details" />
+                        <Route element={<Planets />} path="/planets" />
+                        <Route element={<PlanetDetails />} path="/planet-details" />
+                        <Route element={<Starships />} path="/starships" />
+                        <Route element={<StarshipDetails />} path="/starship-details" />
                         
                     </Routes>
                     <Footer />

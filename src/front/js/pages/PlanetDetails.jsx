@@ -8,18 +8,25 @@ export const PlanetDetails = () => {
     useEffect(() => {
         return () => actions.setPlanet({})
     }, [])
+    const handleImgError = (event) => {
+        event.target.src= 'https://cdn-icons-png.freepik.com/256/2010/2010147.png?semt=ais_hybrid'
+    };
 
     return (
-        <div className="container">
-            <div className="card contact-card my-2">
-                <div className="card-body">
-                    <img
-                        className=""
-                        src={`https://starwars-visualguide.com/assets/img/planets/${planet.uid}.jpg`}
-                    />
+        <div className="container my-4">
+        <div className="row justify-content-center">
+            <div className="col-12 col-md-8 col-lg-6">
+                <div className="card contact-card my-2">
+                    <div className="card-body">
+                        <img
+                            className="card-img-top"
+                            src={`https://starwars-visualguide.com/assets/img/planets/${planet.uid}.jpg`}
+                            onError={handleImgError}
+                            alt={planet.name}
+                        />
                         <div>
-                            <h5 className="card-name">{planet.name}</h5>
-                            <p>
+                            <h5 className="card-title">{planet.name}</h5>
+                            <p className="card-text">
                                 Diameter: {planet.properties?.diameter}<br />
                                 Gravity: {planet.properties?.gravity}<br />
                                 Population: {planet.properties?.population}<br />
@@ -28,13 +35,14 @@ export const PlanetDetails = () => {
                             </p>
                         </div>
                         <div>
-                            <Link to="/Planets">
+                            <Link to="/planets">
                                 <button type="button" className="btn btn-primary">Planet List</button>
                             </Link>
                         </div>
                     </div>
                 </div>
             </div>
-            
-    );
+        </div>
+    </div>
+);
 };
