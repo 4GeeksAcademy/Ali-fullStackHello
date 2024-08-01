@@ -34,20 +34,21 @@ def handle_users():
         data = request.json
         username = data.get('username', None)
         email = data.get('email', None)
-
         # Validate the received data
         if not username or not email:
             response_body['message'] = 'Faltan datos'
             response_body['results'] = {}
             return response_body, 400
-        username_exist = db.session.get(Users, username)
-        email_exist = db.session.get(Users, email)
-        if not username_exist or not email_exist:
-            response_body['message'] = 'Algono o Ambos usuarios no existen o son iguales'
+        username_exist = db.session.execute(db.select(Users).where(Users.username == username)).scalar()
+        email_exist = db.session.execute(db.select(Users).where(Users.email == email)).scalar()
+        if username_exist or email_exist:
+            response_body['message'] = 'El usuario ya existe'
             response_body['results'] = {}
             return response_body, 404
         row = Users(username = data['username'], 
-                    email = data['email'])
+                    email = data['email'],
+                    firstname = data['firstname'],
+                    lastname = data['lastname'])
         db.session.add(row)
         db.session.commit()
         response_body['message'] = "recibí el POST request"
@@ -106,6 +107,29 @@ def handle_user(user_id):
         response_body['message'] = f'recibí el DELETE request {user_id}'
         return response_body, 200
 
+    if request.method == 'PUT':
+        data = request.json
+        username = data.get('username', None)
+        email = data.get('email', None)
+        # Validate the received data
+        if not username or not email:
+            response_body['message'] = 'Faltan datos'
+            response_body['results'] = {}
+            return response_body, 400
+        username_exist = db.session.execute(db.select(Users).where(Users.username == username)).scalar()
+        email_exist = db.session.execute(db.select(Users).where(Users.email == email)).scalar()
+        if username_exist or email_exist:
+            response_body['message'] = 'El usuario ya existe'
+            response_body['results'] = {}
+            return response_body, 404
+        row = Users(username = data['username'], 
+                    email = data['email'],
+                    firstname = data['firstname'],
+                    lastname = data['lastname'])
+        db.session.add(row)
+        db.session.commit()
+        response_body['message'] = "recibí el POST request"
+        return response_body, 200
 
 @api.route('/followers', methods=['GET', 'POST'])
 def handle_followers():
