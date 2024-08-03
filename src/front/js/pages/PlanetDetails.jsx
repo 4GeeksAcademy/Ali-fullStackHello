@@ -27,8 +27,8 @@ export const PlanetDetails = () => {
                         <div>
                             <h5 className="card-title">{planet.name}</h5>
                             <p className="card-text">
-                                Diameter: {planet.properties?.diameter}<br />
                                 Gravity: {planet.properties?.gravity}<br />
+                                Diameter: {planet.properties?.diameter}<br />
                                 Population: {planet.properties?.population}<br />
                                 Terrain: {planet.properties?.terrain}<br />
                                 Created: {planet.properties?.created}
