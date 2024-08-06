@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import db, Users, Followers, Comments, Medias, Posts, Characters, CharacterDetails, Planets, PlanetDetails, Starships, StarshipDetails
+from api.models import db, Users, Favourite, Followers, Comments, Medias, Posts, Characters, CharacterDetails, Planets, PlanetDetails, Starships, StarshipDetails
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
@@ -107,6 +107,30 @@ def handle_user(user_id):
     db.session.commit()
     response_body['message'] = f'User {user_id} deleted successfully'
     return response_body, 200
+    
+
+@api.route("/favorites/<int:user_id>", methods=["POST"])
+def add_favorites():
+    response_body = {}
+    data = request.json
+    item = data.get("ietm")
+    if not item:
+        response_body["message"] = "Missing favorite item"
+        return jsonify(response_body), 400
+
+    user_id = data.get("user_id")
+    user = db.session.execute(db.select(Favorites).where(Favorites.user.id == user_id)).scalar()
+    if not user:
+        response_body["message"] = "User not found"
+        return jsonify(response_body), 404
+    favorites = Favorites(item = data.get("item"),
+                          user_id = user_id)
+    print(favorites)
+    db.session.add(favorites)
+    db.session.commit()
+    response_body["message"] = "POST request"
+    return response_body, 201
+
 
 @api.route("/login", methods=["POST"])
 def login():
