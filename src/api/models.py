@@ -76,20 +76,23 @@ class StarshipDetails(db.Model):
 class Users(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, unique=True, nullable=False)
-    firstname = db.Column(db.String, unique=False, nullable=False)
-    lastname = db.Column(db.String, unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String, unique=False, nullable=False)
+    firstname = db.Column(db.String, unique=False, nullable=True)
+    lastname = db.Column(db.String, unique=False, nullable=True)
+    is_active = db.Column(db.Boolean, unique=False, nullable=False)
+    is_admin = db.Column(db.Boolean, unique=False, nullable=False)
 
     def __repr__(self):
-        return f'<User {self.email} - {self.username}>'
+        return f'<User {self.id} - {self.email}>'
 
     def serialize(self):
         return {"id": self.id,
-                "username": self.username,
                 "firstname": self.firstname,
                 "lastname": self.lastname,
-                "email": self.email}
+                "email": self.email,
+                'is_active': self.is_active,
+                'is_admin': self.is_admin}
 
 
 class Followers(db.Model):

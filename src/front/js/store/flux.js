@@ -17,6 +17,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favorites: [],
 		},
 		actions: {
+			getPosts: () => {},
+			setAlert: (newAlert) => {setStore({ alert: newAlert})},
+			setCurrentContact: (contact) => {setStore({ currentContact: contact })},
+			setCurrentUser: (user) => {setStore({ currentUser: user })},
+			setIsLoged: (isLogin) => {setStore({ isLoged: isLogin })},
 			// Function to bring characters
 			getCharacters: async () => {
 				const url = `${process.env.BACKEND_URL}/api/people`
