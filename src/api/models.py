@@ -95,8 +95,8 @@ class Users(db.Model):
                 'is_admin': self.is_admin}
 
 
-class Favourite(db.Model):
-    __tablename__ = 'favourite'
+class Favorites(db.Model):
+    __tablename__ = 'favorite'
     id = db.Column(db.Integer, primary_key=True)
     item = db.Column(db.String(120))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -110,8 +110,6 @@ class Favourite(db.Model):
                 "item": self.item,
                 "user_id": self.user_id}
     
-
-
 
 class Followers(db.Model):
     __tablename__ = "followers"

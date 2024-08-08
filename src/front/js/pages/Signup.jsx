@@ -5,20 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const { actions } = useContext(Context);
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
 
-  const handleFirstnameChange = (event) => {setFirstname(event.target.value);};
-  const handleLastnameChange = (event) => {setLastname(event.target.value);};
+  const navigate = useNavigate()
   const handleEmailChange = (event) => {setEmail(event.target.value);};
   const handlePasswordChange = (event) => {setPassword(event.target.value);};
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const dataToSend = { firstname, lastname, email, password };
+    const dataToSend = { email, password };
     // fetch to /api/signup sending dataToSend
     const uri = process.env.BACKEND_URL + '/api/signup';
     const options = {
@@ -55,16 +50,6 @@ export const Signup = () => {
             <div className="card-body">
               <h2 className="card-title text-center mb-3 display-5">Create your Profile</h2>
               <form onSubmit={handleSubmit}>
-                <div className="form-group mt-3 h6">
-                  <label htmlFor="firstname" className="mb-1">First Name:</label>
-                  <input type="text" className="form-control" id="firstname"
-                    value={firstname} onChange={handleFirstnameChange} required/>
-                </div>
-                <div className="form-group mt-3 h6">
-                  <label htmlFor="lastname" className="mb-1">Last Name:</label>
-                  <input type="text" className="form-control" id="lastname"
-                    value={lastname} onChange={handleLastnameChange} required/>
-                </div>
                 <div className="form-group mt-3 h6">
                   <label htmlFor="email" className="mb-1">Email:</label>
                   <input type="email" className="form-control" id="email"

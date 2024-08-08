@@ -22,9 +22,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setCurrentContact: (contact) => {setStore({ currentContact: contact })},
 			setCurrentUser: (user) => {setStore({ currentUser: user })},
 			setIsLoged: (isLogin) => {setStore({ isLoged: isLogin })},
+			logout: () => {
+				localStorage.removeItem('token'); 
+				setStore({ 
+					isLoged: false,
+					user: {},
+					favorites: []
+				});
+			},
 			// Function to bring characters
 			getCharacters: async () => {
-				const url = `${process.env.BACKEND_URL}/api/people`
+				const url = `${process.env.BACKEND_STAR_WARS}/api/people`
 				const options = {
 					method: "GET"
 				};
@@ -55,7 +63,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setCharacter: (person) => { setStore({character: person})},
 			// Function to bring planets
 			getPlanets: async () => {
-				const url = `${process.env.BACKEND_URL}/api/planets`
+				const url = `${process.env.BACKEND_STAR_WARS}/api/planets`
 				const options = {
 					method: "GET"
 				};
@@ -85,7 +93,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setPlanet: (star) => { setStore({planet: star})},
 			// Function to bring starships
 			getStarships: async () => {
-				const url = `${process.env.BACKEND_URL}/api/starships`
+				const url = `${process.env.BACKEND_STAR_WARS}/api/starships`
 				const options = {
 					method: "GET"
 				};

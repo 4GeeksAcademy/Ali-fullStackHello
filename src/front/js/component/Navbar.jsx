@@ -5,7 +5,9 @@ import { Context } from "../store/appContext.js";
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const handleRemoveFavorite = (element) => { actions.removeFavorite(element)}; 
-	//  TODO: Falta hacer la funcion del logout
+	const handleLogout = () => {
+        actions.logout();
+    };
 
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -65,15 +67,10 @@ export const Navbar = () => {
 						</li>
 					</ul>
 					<div className="ml-auto">
-					{/* 
-					<Link to="/todolist">
-						<button className="btn btn-danger me-2">Todo List </button>
-					</Link>
-					*/}
 					{store.isLoged ? 
 						<>
 							<Link to="/">
-							<button className="btn btn-primary ms-2">Logout</button>
+							<button className="btn btn-primary ms-2" onClick={handleLogout}>Logout</button>
 							</Link>
 						</>
 					: 
