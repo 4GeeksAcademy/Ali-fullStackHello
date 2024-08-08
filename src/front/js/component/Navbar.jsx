@@ -4,12 +4,14 @@ import { Context } from "../store/appContext.js";
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
-	const handleRemoveFavorite = (element) => {
-		actions.removeFavorite(element);
-	};
+	const handleRemoveFavorite = (element) => { actions.removeFavorite(element)}; 
+	const handleLogout = () => {
+        actions.logout();
+    };
+
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-			<div className="container-fluid">
+			<div className="container-fluid">  
 				<img
 					className="logo"
 					alt="Logo"
@@ -23,7 +25,7 @@ export const Navbar = () => {
 				<div className="collapse navbar-collapse" id="navbarNav">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 						<li className="nav-item">
-							<Link className="nav-link" to="/home">Home</Link>
+							<Link className="nav-link" to="/">Home</Link>
 						</li>
 						<li className="nav-item">
 							<Link className="nav-link" to="/characters">Characters</Link>
@@ -64,6 +66,24 @@ export const Navbar = () => {
 							</ul>
 						</li>
 					</ul>
+					<div className="ml-auto">
+					{store.isLoged ? 
+						<>
+							<Link to="/">
+							<button className="btn btn-primary ms-2" onClick={handleLogout}>Logout</button>
+							</Link>
+						</>
+					: 
+						<>
+							<Link to="/login">
+								<button className="btn btn-primary ms-2">Login</button>
+							</Link>
+							<Link to="/signup">
+								<button className="btn btn-success ms-2">Signup</button>
+							</Link>
+						</>
+					}
+				</div>
 				</div>
 			</div>
 		</nav>

@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import db, Users, Followers, Comments, Medias, Posts, Characters, CharacterDetails, Planets, PlanetDetails, Starships, StarshipDetails
+from api.models import db, Users, Favorites, Followers, Comments, Medias, Posts, Characters, CharacterDetails, Planets, PlanetDetails, Starships, StarshipDetails
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
@@ -107,13 +107,43 @@ def handle_user(user_id):
     db.session.commit()
     response_body['message'] = f'User {user_id} deleted successfully'
     return response_body, 200
+    
+
+@api.route("/favorites", methods=['POST', 'GET'])
+@jwt_required()
+def manage_favorites():
+    response_body = {}
+    current_user = get_jwt_identity()
+    user = db.session.execute(db.select(Users).where(Users.id == current_user['user_id'])).scalar()
+    if not user:
+        response_body['results'] = {}
+        response_body["message"] = "User not found"
+        return response_body, 404
+    if request.method == 'POST':
+        data = request.json
+        item = data.get("item")
+        if not item:
+            response_body["message"] = "Missing favorite item"
+            return response_body, 400
+        favorites = Favorites(item=item, user_id=current_user['user_id'])
+        db.session.add(favorites)
+        db.session.commit()
+        response_body["message"] = "Favorite item added successfully"
+        return response_body, 201
+    if request.method == 'GET':
+        favorites = db.session.execute(db.select(Favorites).where(Favorites.user_id == current_user['user_id'])).scalars()
+        results = [{"id": row.id, "item": row.item} for row in favorites]
+        response_body['results'] = results
+        response_body['message'] = f'Favorites for user {current_user["email"]} retrieved successfully'
+        return response_body, 200
+
 
 @api.route("/login", methods=["POST"])
 def login():
     response_body = {}
     data = request.json
     # TODO: realizar la lógica para verificar en nuestra DB
-    email = data.get("email", None)
+    email = data.get("email", None).lower()
     password = data.get("password", None)
     user = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
     if not user:
@@ -122,6 +152,32 @@ def login():
     access_token = create_access_token(identity={'email': email, 'user_id': user.id, 'is_admin': user.is_admin})
     response_body['results'] = user.serialize()
     response_body['message'] = 'User logged'
+    response_body['access_token'] = access_token
+    return response_body, 201
+
+
+@api.route('/signup', methods=['POST'])
+def signup():
+    response_body = {}
+    email = request.json.get("email", None).lower()
+    password = request.json.get("password", None)
+    # TODO: Logica de verificación de un mail válido y password válido, si ya existe el maiil
+    user = db.session.execute(db.select(User).where(User.id == user_id)).scalars()
+    if not user:
+        response_body["message"] = "User not found"
+        return jsonify(response_body), 404
+    user = Users()
+    user.email = email
+    user.password = password
+    user.is_active = True
+    user.is_admin = False
+    db.session.add(user)
+    db.session.commit()
+    access_token = create_access_token(identity={'email': user.email,
+                                                 'user_id': user.id,
+                                                 'is_admin': user.is_admin})
+    response_body['results'] = user.serialize()
+    response_body['message'] = 'User Registrado y logeado'
     response_body['access_token'] = access_token
     return response_body, 201
 
@@ -138,6 +194,8 @@ def profile():
     response_body['message'] = f'Acceso dengado porque no eres Administrador'
     response_body['user_data'] = {}
     return response_body, 403
+
+
 @api.route('/followers', methods=['GET', 'POST'])
 def handle_followers():
     response_body = {}
