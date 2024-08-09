@@ -4,14 +4,14 @@ import { Context } from "../store/appContext.js";
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
-	const handleRemoveFavorite = (element) => { actions.removeFavorite(element)}; 
+	const handleRemoveFavorite = (element) => { actions.removeFavorite(element) };
 	const handleLogout = () => {
-        actions.logout();
-    };
+		actions.logout();
+	};
 
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-			<div className="container-fluid">  
+			<div className="container-fluid">
 				<img
 					className="logo"
 					alt="Logo"
@@ -63,27 +63,42 @@ export const Navbar = () => {
 										</li>
 									))
 								)}
+								<li><hr className="dropdown-divider" /></li>
+								<li>
+									<Link to="/add-favorites">
+										<button className="btn btn-danger dropdown-item">Extra Favorites</button>
+									</Link>
+								</li>
 							</ul>
 						</li>
 					</ul>
 					<div className="ml-auto">
-					{store.isLoged ? 
-						<>
-							<Link to="/">
-							<button className="btn btn-primary ms-2" onClick={handleLogout}>Logout</button>
-							</Link>
-						</>
-					: 
-						<>
-							<Link to="/login">
-								<button className="btn btn-primary ms-2">Login</button>
-							</Link>
-							<Link to="/signup">
-								<button className="btn btn-success ms-2">Signup</button>
-							</Link>
-						</>
-					}
-				</div>
+						{store.isLoged ?
+							<>
+								<Link to="/profile">
+									<img
+										src="https://i0.wp.com/mir-s3-cdn-cf.behance.net/project_modules/1400/3aba9f29238821.5681474de00fd.png?ssl=1"
+										alt="Profile"
+										width="40" 
+										height="40"
+										className="rounded-circle me-2"
+									/>
+								</Link>
+								<Link to="/">
+									<button className="btn btn-primary ms-2" onClick={handleLogout}>Logout</button>
+								</Link>
+							</>
+							:
+							<>
+								<Link to="/login">
+									<button className="btn btn-primary ms-2">Login</button>
+								</Link>
+								<Link to="/signup">
+									<button className="btn btn-success ms-2">Signup</button>
+								</Link>
+							</>
+						}
+					</div>
 				</div>
 			</div>
 		</nav>

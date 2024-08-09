@@ -109,7 +109,7 @@ def handle_user(user_id):
     return response_body, 200
     
 
-@api.route("/favorites", methods=['POST', 'GET'])
+@api.route("/favorites", methods=['POST', 'GET', 'PUT', 'DELETE'])
 @jwt_required()
 def manage_favorites():
     response_body = {}
@@ -136,6 +136,35 @@ def manage_favorites():
         response_body['results'] = results
         response_body['message'] = f'Favorites for user {current_user["email"]} retrieved successfully'
         return response_body, 200
+    if request.method == 'PUT':
+        data = request.json
+        favorite_id = data.get("id")
+        new_item = data.get("item")
+        if not favorite_id or not new_item:
+            response_body["message"] = "Missing favorite item ID or new item"
+            return response_body, 400
+        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id, Favorites.user_id == current_user['user_id'])).scalar()
+        if not favorite:
+            response_body["message"] = "Favorite item not found"
+            return response_body, 404
+        favorite.item = new_item
+        db.session.commit()
+        response_body["message"] = "Favorite item updated successfully"
+        return response_body, 200
+    if request.method == 'DELETE':
+        data = request.json
+        favorite_id = data.get("id")
+        if not favorite_id:
+            response_body["message"] = "Missing favorite item ID"
+            return response_body, 400
+        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id, Favorites.user_id == current_user['user_id'])).scalar()
+        if not favorite:
+            response_body["message"] = "Favorite item not found"
+            return response_body, 404
+        db.session.delete(favorite)
+        db.session.commit()
+        response_body["message"] = "Favorite item deleted successfully"
+        return response_body, 200
 
 
 @api.route("/login", methods=["POST"])
@@ -159,27 +188,25 @@ def login():
 @api.route('/signup', methods=['POST'])
 def signup():
     response_body = {}
-    email = request.json.get("email", None).lower()
-    password = request.json.get("password", None)
-    # TODO: Logica de verificación de un mail válido y password válido, si ya existe el maiil
-    user = db.session.execute(db.select(User).where(User.id == user_id)).scalars()
-    if not user:
-        response_body["message"] = "User not found"
-        return jsonify(response_body), 404
-    user = Users()
-    user.email = email
-    user.password = password
-    user.is_active = True
-    user.is_admin = False
-    db.session.add(user)
+    data = request.json
+    email = data.get("email").lower()
+    new_user = Users(
+        email = email,
+        password = data.get("password"),
+        is_active = True,
+        is_admin = False
+    )
+    print(new_user)
+    db.session.add(new_user)
     db.session.commit()
-    access_token = create_access_token(identity={'email': user.email,
-                                                 'user_id': user.id,
+    user = db.session.execute(db.select(Users).where(Users.email == email)).scalar()
+    access_token = create_access_token(identity={'email': user.email, 
+                                                 'user_id': user.id, 
                                                  'is_admin': user.is_admin})
     response_body['results'] = user.serialize()
-    response_body['message'] = 'User Registrado y logeado'
+    response_body['message'] = 'User registrado y logeado'
     response_body['access_token'] = access_token
-    return response_body, 201
+    return response_body, 200
 
 
 @api.route("/profile", methods=["GET"])
