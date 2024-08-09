@@ -17,9 +17,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favorites: [],
 		},
 		actions: {
+			getPosts: () => {},
+			setAlert: (newAlert) => {setStore({ alert: newAlert})},
+			setCurrentContact: (contact) => {setStore({ currentContact: contact })},
+			setCurrentUser: (user) => {setStore({ currentUser: user })},
+			setIsLoged: (isLogin) => {setStore({ isLoged: isLogin })},
+			logout: () => {
+				localStorage.removeItem('token'); 
+				setStore({ 
+					isLoged: false,
+					user: {},
+					favorites: []
+				});
+			},
 			// Function to bring characters
 			getCharacters: async () => {
-				const url = `${process.env.BACKEND_URL}/api/people`
+				const url = `${process.env.BACKEND_STAR_WARS}/api/people`
 				const options = {
 					method: "GET"
 				};
@@ -50,7 +63,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setCharacter: (person) => { setStore({character: person})},
 			// Function to bring planets
 			getPlanets: async () => {
-				const url = `${process.env.BACKEND_URL}/api/planets`
+				const url = `${process.env.BACKEND_STAR_WARS}/api/planets`
 				const options = {
 					method: "GET"
 				};
@@ -80,7 +93,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setPlanet: (star) => { setStore({planet: star})},
 			// Function to bring starships
 			getStarships: async () => {
-				const url = `${process.env.BACKEND_URL}/api/starships`
+				const url = `${process.env.BACKEND_STAR_WARS}/api/starships`
 				const options = {
 					method: "GET"
 				};
@@ -116,6 +129,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ favorites: [...myArray, name] });
 				}
 			},
+			// Function to add favorites from an input
+			addFavoriteInput: (name) => {
+                const store = getStore();
+                const myArray = store.favorites;
+				const favoriteAdded = myArray.some(item => item.name === name);
+                	if (!favoriteAdded) {
+                    setStore({ favorites: [...myArray, { name: name }] });
+                }
+            },
 			// Function to remove favorites
 			removeFavorite: (name) => {
                 const store = getStore();

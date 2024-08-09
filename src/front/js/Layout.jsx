@@ -10,6 +10,10 @@ import { Error404 } from "./component/Error404.jsx";
 import { ContactCards } from "./pages/ContactCards.jsx";
 /* import custom pages */
 import { Home } from "./pages/Home.jsx";
+import { Login } from "./pages/Login.jsx";
+import { Signup } from "./pages/Signup.jsx";
+import { Profile } from "./pages/Profile.jsx";
+import { AddFavorites } from "./pages/AddFavorites.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
 import { FormContact } from "./pages/FormContact.jsx";
@@ -36,8 +40,12 @@ const Layout = () => {
                 <ScrollToTop>
                 <Navbar />
                     <Routes>
-                        <Route element={<Home />} path="/home" />
+                        <Route element={<Home />} path="/" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<Signup />} path="/signup" />
+                        <Route element={<Profile />} path="/profile" />
                         {/* <Route element={<Error404/>} path="*"/> */}
+                        <Route element={<AddFavorites />} path="/add-favorites" />
                         <Route element={<ContactCards />} path="/contact-cards" />
                         <Route element={<FormContact />} path="/form-contact" />
                         <Route element={<FormEditContact />} path="/form-edit-contact" />
