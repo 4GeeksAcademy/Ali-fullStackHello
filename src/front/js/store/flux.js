@@ -129,6 +129,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ favorites: [...myArray, name] });
 				}
 			},
+			// Function to add favorites from an input
+			addFavoriteInput: (name) => {
+                const store = getStore();
+                const myArray = store.favorites;
+				const favoriteAdded = myArray.some(item => item.name === name);
+                	if (!favoriteAdded) {
+                    setStore({ favorites: [...myArray, { name: name }] });
+                }
+            },
 			// Function to remove favorites
 			removeFavorite: (name) => {
                 const store = getStore();
